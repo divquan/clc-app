@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { TouchableOpacity } from "react-native";
 import MyComponent from "../components/MyComponent";
 import { useTheme } from "@rneui/themed";
+import { Route, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -16,7 +17,7 @@ function MyTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === "Home") {
+          if (route.name === "HomeStack") {
             iconName = focused ? "home" : "home-outline";
             size = focused ? 30 : 28;
           } else if (route.name === "Explore") {
@@ -36,24 +37,21 @@ function MyTabs() {
         tabBarInactiveTintColor: theme.colors.secondary,
         tabBarStyle: {
           paddingTop: 4,
+          display: getRouteName(route) ? "flex" : "none",
           paddingBottom: 8,
           height: 60,
           backgroundColor: theme.colors.background,
         },
         tabBarButton: (props) => <TouchableOpacity {...props} />,
-        // header: ({ navigation, route, options }) => {
-        // //   const title = getHeaderTitle(options, route.name);
-
-        //   return showHeader(route) ? (
-        //     <Header title={title} style={options.headerStyle} />
-        //   ) : null;
-        // },
       })}
     >
       <Tab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
-        options={{ headerShown: false }}
+        options={({ route }) => ({
+          // Use tabBarVisible to hide the tab bar in specific screens
+          headerShown: false,
+        })}
       />
       <Tab.Screen name="Explore" component={Home} />
       <Tab.Screen name="Bookmark" component={Home} />
@@ -62,3 +60,24 @@ function MyTabs() {
   );
 }
 export default MyTabs;
+
+const showHeader = (route: Partial<Route<string>>) => {
+  const routeName = getFocusedRouteNameFromRoute(route);
+  if (
+    routeName?.includes("PostDetail") ||
+    routeName?.includes("CommentScreen")
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const getRouteName = (route: Partial<Route<string>>) => {
+  const routeName = getFocusedRouteNameFromRoute(route);
+  if (routeName?.includes("PostPage") || routeName?.includes("CommentScreen")) {
+    return false;
+  } else {
+    return true;
+  }
+};

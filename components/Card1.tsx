@@ -46,6 +46,7 @@ const PostCard = ({
   date,
   navigation,
   content,
+  onPressFn,
 }: {
   id: string;
   imgUrl: string;
@@ -55,10 +56,11 @@ const PostCard = ({
   date: string;
   navigation?: string;
   content: string[];
+  onPressFn: () => void;
 }) => {
   const { theme } = useTheme();
   return (
-    <>
+    <View>
       <View
         key={id}
         style={[
@@ -69,39 +71,43 @@ const PostCard = ({
           },
         ]}
       >
-        <Image
-          style={[styles.image, { width: 100, height: 100 }]}
-          source={{
-            uri: imgUrl,
-          }}
-        />
+        <TouchableOpacity onPress={onPressFn}>
+          <Image
+            style={[styles.image, { width: 100, height: 100 }]}
+            source={{
+              uri: imgUrl,
+            }}
+          />
+        </TouchableOpacity>
         <View
           style={{ flex: 1, marginLeft: 5, justifyContent: "space-between" }}
         >
           <Text style={{ color: theme.colors.grey3, marginLeft: 5 }}>
             {category}
           </Text>
-          <Text
-            style={{
-              color: theme.colors.grey0,
-              fontWeight: "700",
-              fontSize: 15,
-            }}
-            numberOfLines={1}
-          >
-            {title}
-          </Text>
-          <Text
-            //   onPress={onPress}
-            numberOfLines={2}
-            ellipsizeMode="head"
-            style={[
-              styles.heading,
-              { color: theme.colors.black, fontSize: 14 },
-            ]}
-          >
-            {`${excerpt}`}
-          </Text>
+          <TouchableOpacity onPress={onPressFn}>
+            <Text
+              style={{
+                color: theme.colors.grey0,
+                fontWeight: "700",
+                fontSize: 15,
+              }}
+              numberOfLines={1}
+            >
+              {title}
+            </Text>
+            <Text
+              //   onPress={onPress}
+              numberOfLines={2}
+              ellipsizeMode="head"
+              style={[
+                styles.heading,
+                { color: theme.colors.black, fontSize: 14 },
+              ]}
+            >
+              {`${excerpt}`}
+            </Text>
+          </TouchableOpacity>
 
           <View
             style={{
@@ -110,18 +116,20 @@ const PostCard = ({
               justifyContent: "space-between",
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons
-                name="time-outline"
-                size={13}
-                color={theme.colors.grey3}
-                style={{ marginRight: 3 }}
-              />
+            <TouchableOpacity onPress={onPressFn}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons
+                  name="time-outline"
+                  size={13}
+                  color={theme.colors.grey3}
+                  style={{ marginRight: 3 }}
+                />
 
-              <Text style={{ color: theme.colors.grey2 }}>
-                {getFormattedDate(date)}
-              </Text>
-            </View>
+                <Text style={{ color: theme.colors.grey2 }}>
+                  {getFormattedDate(date)}
+                </Text>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity>
               <Ionicons
                 name="ellipsis-horizontal-outline"
@@ -132,7 +140,7 @@ const PostCard = ({
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 

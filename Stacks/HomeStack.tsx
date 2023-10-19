@@ -6,8 +6,9 @@ import {
 import Home from "../Screens/Home";
 import Logo from "../components/Logo";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../types";
+import PostPage from "../Screens/PostPage";
 
 const Homestack = createNativeStackNavigator();
 type HomePageProps = {
@@ -36,14 +37,9 @@ const HomeStack: React.FC<HomePageProps> = () => {
         }}
       />
       <Homestack.Screen
-        name="PostDetail"
-        component={Home}
-        // tabBarStyle={{ display: "none" }}
-        // options={{
-        //   headerShown: false,
-        //   headerTitle: "",
-        //   headerRight: () => <Home />,
-        // }}
+        name="PostPage"
+        component={PostPage}
+        options={{ gestureEnabled: true }}
       />
       <Homestack.Screen
         name="CommentScreen"

@@ -53,7 +53,6 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     const cat = getCategoryNameById(hardCategories, item.categories[0]);
     return (
       <PostCard
-        // navigation={navigation}
         key={item.id}
         id={item.id}
         date={item.date}
@@ -62,9 +61,8 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
         imgUrl={item.jetpack_featured_media_url}
         excerpt={excerpt} // Replace with the actual excerpt property
         content={content}
-        onPress={() => {
-          console.log("yyyyyyyy");
-          navigation.navigate("PostDetail");
+        onPressFn={() => {
+          navigation.navigate("PostPage", { postID: item.id });
         }}
       />
     );

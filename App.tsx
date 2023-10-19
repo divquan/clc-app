@@ -1,7 +1,7 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@rneui/themed";
 import Component from "./components/MyComponent";
-import { BottomTab } from "./Stacks";
+import BottomTab from "./Stacks/BottomTab";
 import { NavigationContainer } from "@react-navigation/native";
 
 const theme = createTheme({
