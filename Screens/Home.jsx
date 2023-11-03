@@ -1,52 +1,55 @@
 import { View, Text, ScrollView, RefreshControl, FlatList } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PostCard } from "../components/Card1";
 import { useTheme } from "@rneui/themed";
 import useSWR from "swr";
-import { fetchPosts } from "../lib/api.request";
+import { fetchLatestPosts, fetchPosts } from "../lib/api.request";
 //@ts-ignore
 import he from "he";
 import { extractPTagContents, removePTags } from "../lib/helperfunctions";
 import { hardCategories } from "../lib/data";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
-
-type HomeProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
-};
-const Home: React.FC<HomeProps> = ({ navigation }) => {
+const Home = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { theme } = useTheme();
-  const pages = 10;
-  const { data, error, mutate, isLoading } = useSWR(`${pages}`, fetchPosts, {
-    revalidateOnFocus: true,
-  });
-
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const onRefresh = React.useCallback(async () => {
     try {
       // Set refreshing to true
       setRefreshing(true);
 
       // Refetch data
-      await mutate(pages);
+      await fetchData();
     } catch (error) {
       console.error("Error fetching latest posts:", error);
     } finally {
       // Set refreshing to false after the refresh action is complete
       setRefreshing(false);
     }
-  }, [mutate, pages]);
+  }, []);
 
-  const renderItem = ({ item }: { item: any }) => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetchLatestPosts();
+      setData(res);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const renderItem = ({ item }) => {
     item.title.rendered = he.decode(item.title.rendered);
     const decodeExcerpt = he.decode(item.excerpt.rendered);
     const excerpt = removePTags(decodeExcerpt);
     const content = extractPTagContents(item.content.rendered);
     // const decodeContent = he.decode(content);
-    const getCategoryNameById = (
-      categories: { id: number; name: string }[],
-      categoryIdToFind: number
-    ) => {
+    const getCategoryNameById = (categories, categoryIdToFind) => {
       const category = categories.find((item) => item.id === categoryIdToFind);
       return category ? category.name : null;
     };
@@ -68,8 +71,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     );
   };
 
-  if (isLoading || refreshing) return <Text>Loading...</Text>;
-  if (error) return <Text>Error...</Text>;
+  if (isLoading) return <Text>Loading...</Text>;
 
   return (
     // <ScrollView style={{ backgroundColor: theme.colors.background }}>

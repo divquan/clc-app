@@ -75,7 +75,7 @@ const showHeader = (route: Partial<Route<string>>) => {
 
 const getRouteName = (route: Partial<Route<string>>) => {
   const routeName = getFocusedRouteNameFromRoute(route);
-  if (routeName?.includes("PostPage") || routeName?.includes("CommentScreen")) {
+  if (routeName?.includes("PostPage") || routeName?.includes("comment")) {
     return false;
   } else {
     return true;

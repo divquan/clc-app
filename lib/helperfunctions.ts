@@ -1,4 +1,5 @@
 import moment from "moment";
+import { ToastAndroid } from "react-native";
 
 export const getFormattedDate = (createdAt: string) => {
     const timeDifferenceHours = moment().diff(createdAt, "hours");
@@ -56,4 +57,13 @@ export const extractPTagContents = (htmlText: string) => {
     }
 
     return extractedContents;
+};
+
+
+export const showToast = (message: string) => {
+    ToastAndroid.showWithGravity(
+        message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+    );
 };

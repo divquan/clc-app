@@ -9,6 +9,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../types";
 import PostPage from "../Screens/PostPage";
+import { Comment } from "../Screens";
 
 const Homestack = createNativeStackNavigator();
 type HomePageProps = {
@@ -42,8 +43,8 @@ const HomeStack: React.FC<HomePageProps> = () => {
         options={{ gestureEnabled: true }}
       />
       <Homestack.Screen
-        name="CommentScreen"
-        component={Home}
+        name="comment"
+        component={Comment}
         // options={{
         //   headerShown: false,
         //   headerTitle: "",

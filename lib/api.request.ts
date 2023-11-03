@@ -52,9 +52,76 @@ export const fetchComments = async (postID: string) => {
         const response = await axios.get(
             `https://clcgh.org/wp-json/wp/v2/comments?post=${postID}`
         );
-        console.log(`${BASE_URL}comments?post=${postID}`)
         return response.data;
     } catch (error) {
         console.error('Error fetching comments:', error);
+    }
+};
+
+
+export const fetchLatestPosts = async (): Promise<Post[]> => {
+    try {
+        // Make an API request to fetch latest posts with _embed
+        const response: AxiosResponse<Post[]> = await axios.get(
+            'https://clcgh.org/wp-json/wp/v2/posts?_embed'
+        );
+
+        // Extract the posts data from the response
+        const posts: Post[] = response.data;
+
+        return posts;
+    } catch (error) {
+        console.error('Error fetching latest posts:', error);
+        throw error;
+    }
+};
+
+
+export const getPostIdFromSlug = async (slug: string) => {
+    try {
+        const response = await fetch(`https://yourwordpresssite.com/wp-json/wp/v2/posts?slug=${slug}`);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch post data');
+        }
+
+        const postData = await response.json();
+
+        if (postData.length > 0) {
+            const postId = postData[0].id;
+            return postId;
+        } else {
+            throw new Error('Post not found');
+        }
+    } catch (error) {
+
+        console.error(error);
+        throw new Error('Failed to fetch post data');
+
+        // Handle error appropriately
+    }
+};
+
+
+export const addCommentToPost = async (postId: string, commentData: any
+) => {
+    try {
+        const response = await axios.post('https://yourwordpresssite.com/wp-json/wp/v2/comments', {
+            post: postId,
+            content: commentData.content,
+            author_email: commentData.author_email,
+            author_name: commentData.author_name,
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                // Include any additional headers if needed, such as authentication headers
+            },
+        });
+
+        console.log('Comment added successfully:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        // Handle the error appropriately
     }
 };
