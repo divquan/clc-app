@@ -105,6 +105,7 @@ export const getPostIdFromSlug = async (slug: string) => {
 
 export const addCommentToPost = async (postId: string, commentData: any
 ) => {
+    console.log("adding comment")
     try {
         const response = await axios.post('https://yourwordpresssite.com/wp-json/wp/v2/comments', {
             post: postId,
@@ -121,7 +122,7 @@ export const addCommentToPost = async (postId: string, commentData: any
         console.log('Comment added successfully:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Error adding comment:', error);
+        throw error;
         // Handle the error appropriately
     }
 };

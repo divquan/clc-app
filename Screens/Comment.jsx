@@ -47,6 +47,7 @@ const Comment = ({ navigation, route }) => {
       })
       .catch((e) => console.log(e));
   }, []);
+
   return (
     <View style={{ flex: 1, padding: 16 }}>
       {/* Comment input */}
@@ -76,13 +77,20 @@ const Comment = ({ navigation, route }) => {
           }}
           onPress={async () => {
             console.log(postID);
-            await addCommentToPost(postID, {
-              name: "Divine",
-              email: "divquan@gmail.com",
-              content: "This is a comment",
-              parent: 0,
-            });
-            ToastAndroid.show("Comment posted!", ToastAndroid.SHORT);
+            try {
+              await addCommentToPost(postID, {
+                name: "Divine",
+                email: "divquan@gmail.com",
+                content: "This is a comment",
+                parent: 0,
+              });
+              ToastAndroid.show("Comment posted!", ToastAndroid.SHORT);
+            } catch (er) {
+              ToastAndroid.show(
+                "Could not add comment: " + er.message,
+                ToastAndroid.SHORT
+              );
+            }
           }}
         >
           <Text style={{ color: "white" }}>Post</Text>

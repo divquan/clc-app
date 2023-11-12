@@ -10,28 +10,34 @@ import { Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../types";
 import PostPage from "../Screens/PostPage";
 import { Comment } from "../Screens";
+import { useTheme } from "@rneui/themed";
 
 const Homestack = createNativeStackNavigator();
 type HomePageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
 };
 const HomeStack: React.FC<HomePageProps> = () => {
+  const { theme } = useTheme();
   return (
     <Homestack.Navigator>
       <Homestack.Screen
-        name="Home"
+        name="All Posts"
         component={Home}
         options={{
           headerTitle: () => <Logo />,
           headerStyle: {
-            backgroundColor: "#fff", // Customize the background color
+            backgroundColor: theme.colors.background, // Customize the background color
           },
           headerRight: () => (
             <TouchableOpacity>
-              <Ionicons name="notifications-outline" size={25} />
+              <Ionicons
+                color={theme.colors.grey2}
+                name="notifications-outline"
+                size={25}
+              />
             </TouchableOpacity>
           ),
-          headerTintColor: "#fff", // Customize the text color
+          headerTintColor: "#000", // Customize the text color
           headerTitleStyle: {
             fontWeight: "bold", // Customize the title text style
           },

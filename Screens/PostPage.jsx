@@ -7,19 +7,26 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Share,
+  Modal,
+  Alert,
+  Pressable,
 } from "react-native";
 import { fetchComments, fetchPost } from "../lib/api.request";
 import { ScrollView } from "react-native";
-import { useTheme } from "@rneui/themed";
+import { Button, useTheme } from "@rneui/themed";
 import { extractPTagContents, showToast } from "../lib/helperfunctions";
 import Logo from "../components/Logo";
 import Icon from "react-native-vector-icons/Ionicons";
+import Submenu from "../components/Submenu";
+import ScreenTimeTracker from "./ScreenTImeTracker";
 
 const PostPage = ({ route, navigation }) => {
   const { postID } = route.params;
   const [data, setData] = useState({});
   const [content, setContent] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showModal, setShowModal] = useState(false);
 
   const { theme } = useTheme();
 
@@ -106,7 +113,7 @@ const PostPage = ({ route, navigation }) => {
   }
 
   return (
-    <>
+    <ScreenTimeTracker>
       <ScrollView
         style={{
           flex: 1,
@@ -118,6 +125,7 @@ const PostPage = ({ route, navigation }) => {
           source={{ uri: data?.jetpack_featured_media_url }}
           style={{ width: "100%", height: 200, resizeMode: "cover" }}
         />
+
         {/* Post Content */}
         <View style={{ padding: 16 }}>
           <Text
@@ -198,7 +206,7 @@ const PostPage = ({ route, navigation }) => {
           />
         </TouchableOpacity>
       </View>
-    </>
+    </ScreenTimeTracker>
   );
 };
 
